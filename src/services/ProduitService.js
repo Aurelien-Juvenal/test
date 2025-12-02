@@ -13,6 +13,14 @@ class ProduitService {
       throw error.response?.data || error;
     }
   }
+  async deleteProduit(id) {
+    try {
+      const response = await axios.delete(`${API_URL}/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  }
 
   // Récupérer un produit par ID
   async getProduit(id) {
@@ -79,14 +87,7 @@ class ProduitService {
   }
 
   // Supprimer un produit
-  async deleteProduit(id) {
-    try {
-      const response = await axios.delete(`${API_URL}/${id}`);
-      return response.data;
-    } catch (error) {
-      throw error.response?.data || error;
-    }
-  }
+
 
   // Mettre à jour le stock
   async updateStock(id, stock) {

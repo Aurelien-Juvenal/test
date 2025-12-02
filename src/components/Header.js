@@ -21,6 +21,8 @@ import {
     faQuestionCircle,
     
   } from '@fortawesome/free-solid-svg-icons';
+import { Routes,Navigate,Link,BrowserRouter } from 'react-router-dom';
+
 
 
 const Header = () => {
@@ -101,25 +103,17 @@ const Header = () => {
                         </a>
                     </li>
                     
-                    <li class="nav-item dropdown" >
-                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                        <FontAwesomeIcon icon={faUser} />
-                        </a>
+                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"><i class="fas fa-user me-2"></i>Se connecter</a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item text-decoration-none" href="#">
-                            <FontAwesomeIcon icon={faUser} />Profil
+                            <li><a class="dropdown-item" href="#">
+                                <i class="fas fa-user me-2"></i>Profil
                             </a></li>
                             <li><a class="dropdown-item" href="#">
-                            <FontAwesomeIcon icon={faShoppingBag} />Commandes
+                                <i class="fas fa-shopping-bag me-2"></i>Commandes
                             </a></li>
-                            
-                    
-                            
-                            
                             <li><hr class="dropdown-divider" /></li>
-                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                            <FontAwesomeIcon icon={faSignOut} />
-                               Déconnexion
+                            <li><a class="dropdown-item" href="#">
+                                <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
                             </a></li>
                         </ul>
                     </li>

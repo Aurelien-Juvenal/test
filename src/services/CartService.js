@@ -1,80 +1,41 @@
-// src/services/panierService.js
-const API_BASE_URL = 'http://localhost:5000/api';
+import axios from 'axios';
+
+
+const API_URL = 'http://localhost:5000/api';
+
+// Configuration d'axios
+const api = axios.create({
+  baseURL: API_URL,
+});
+
+// Intercepteur pour ajouter le token aux requêtes
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export const panierService = {
-  // Ajouter un produit au panier
-  async ajouterAuPanier(produitId, quantite = 1) {
+  baseURL: 'http://localhost:5000/api',
+  getPanier: async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/panier/ajouter`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          produit_id: produitId,
-          quantite: quantite
-        }),
-        credentials: 'include' // Important pour les sessions
-      });
+      const response = await api.get('/panier/tous');
+      const cartCount = response.data.count;
+      
+      // Mettre à jour le localStorage avec les nouvelles données
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Erreur lors de l\'ajout au panier');
-      }
-
-      return await response.json();
+      
+      return response.data;
     } catch (error) {
-      console.error('Erreur:', error);
-      throw error;
+      // Si erreur d'authentification, déconnecter l'utilisateur
+      throw error.response?.data || { error: 'Erreur lors de la récupération du panier' };
     }
-  },
-
-  // Récupérer le panier
-  async getPanier() {
-    try {
-      const response = await fetch(`${API_BASE_URL}/panier`, {
-        credentials: 'include'
-      });
-      if (!response.ok) {
-        throw new Error('Erreur lors de la récupération du panier');
-      }
-      return await response.json();
-    } catch (error) {
-      console.error('Erreur:', error);
-      throw error;
-    }
-  },
-
-  // Supprimer un item du panier
-  async supprimerDuPanier(itemId) {
-    try {
-      const response = await fetch(`${API_BASE_URL}/panier/${itemId}`, {
-        method: 'DELETE',
-        credentials: 'include'
-      });
-      if (!response.ok) {
-        throw new Error('Erreur lors de la suppression du panier');
-      }
-      return await response.json();
-    } catch (error) {
-      console.error('Erreur:', error);
-      throw error;
-    }
-  },
-
-  // Récupérer le nombre d'items dans le panier
-  async getPanierCount() {
-    try {
-      const response = await fetch(`${API_BASE_URL}/panier/count`, {
-        credentials: 'include'
-      });
-      if (!response.ok) {
-        throw new Error('Erreur lors de la récupération du count panier');
-      }
-      return await response.json();
-    } catch (error) {
-      console.error('Erreur:', error);
-      throw error;
-    }
-  }
-};
+  },// Ajouter un produit au panier
+}

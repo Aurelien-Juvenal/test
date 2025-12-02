@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { BrowserRouter as Router, Routes, Route, Navigate,Link } from 'react-router-dom';
 import ProduitForm from './ProduitForm';
 import Profil from './profil';
-import Panier from './Panier';
+
 import { 
   faStore, 
   faHome, 
@@ -118,8 +118,29 @@ function Dashboard() {
   { label: "Traduction", href: "#" },
 ];
 const renderAdminItems = () => {
+
+  <>
+  <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item text-decoration-none" href="#">
+                            <FontAwesomeIcon icon={faUser} />Profil
+                            </a></li>
+                            <li><a class="dropdown-item" href="#">
+                            <FontAwesomeIcon icon={faShoppingBag} />Commandes
+                            </a></li>
+                            
+                    
+                            
+                            
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                            <FontAwesomeIcon icon={faSignOut} />
+                               Déconnexion
+                            </a></li>
+                        </ul>
+  </>
   if (client.description==='admin') return (
 <>
+
       <li>
         <a className="dropdown-item" href="/admin_dashboard">
           <FontAwesomeIcon icon={faCog} className="me-2" />

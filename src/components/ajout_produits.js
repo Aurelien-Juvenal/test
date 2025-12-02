@@ -121,7 +121,7 @@ const AjoutProduit = () => {
     };
 
     return (
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
+        <div class="col-lg-8 main-content" >
             <h2>Ajouter un Nouveau Produit</h2>
             
             <form onSubmit={handleSubmit}>

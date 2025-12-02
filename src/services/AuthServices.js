@@ -23,6 +23,48 @@ api.interceptors.request.use(
 );
 
 export const authService = {
+  getCartCount: async () => {
+    try {
+      const response = await api.get('/panier');
+      
+      if (response.data.success) {
+        return {
+          count: response.data.total_count || 0,
+          success: true
+        };
+      } else {
+        throw new Error(response.data.message || 'Erreur inconnue');
+      }
+    } catch (error) {
+      console.error('Erreur récupération compteur panier:', error);
+      
+      // Si erreur 401 (non authentifié), retourner 0 sans erreur
+      if (error.response?.status === 401) {
+        return { count: 0, success: false };
+      }
+      
+      throw {
+        error: error.response?.data?.error || 'Erreur lors de la récupération du panier',
+        status: error.response?.status
+      };
+    }
+  },
+
+  // NOUVELLE MÉTHODE : Récupérer le panier complet
+  getCart: async () => {
+    try {
+      const response = await api.get('/panier');
+      return response.data;
+    } catch (error) {
+      console.error('Erreur récupération panier:', error);
+      
+      if (error.response?.status === 401) {
+        return { success: false, items: [], total_count: 0, total_price: 0 };
+      }
+      
+      throw error;
+    }
+  },
   // Connexion
   login: async (email, password) => {
     try {
@@ -73,6 +115,8 @@ export const authService = {
     try {
       const response = await api.get('/profil');
       const clientData = response.data.client;
+      
+      
       
       // Mettre à jour le localStorage avec les nouvelles données
       localStorage.setItem('client', JSON.stringify(clientData));
